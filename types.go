@@ -336,6 +336,7 @@ type options struct {
 	GameID             string             `json:"game_id,omitempty"`
 	Alias              string             `json:"alias,omitempty"`
 	BotAdvertisements  []BotAdvertisement `json:"advertisements,omitempty"`
+	ExplodingLifetime  time.Duration      `json:"exploding_lifetime,omitempty"`
 
 	Name        string `json:"name,omitempty"`
 	Public      bool   `json:"public,omitempty"`
@@ -782,6 +783,7 @@ type chat interface {
 	Edit(messageID int, message ...string) (ChatAPI, error)
 	React(messageID int, reaction string) (ChatAPI, error)
 	Send(message ...string) (ChatAPI, error)
+	SendEphemeral(lifetime time.Duration, message ...string) (ChatAPI, error)
 	Reply(replyTo int, message ...string) (ChatAPI, error)
 	Upload(title string, filepath string) (ChatAPI, error)
 	Download(messageID int, filepath string) (ChatAPI, error)

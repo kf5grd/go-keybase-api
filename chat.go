@@ -178,6 +178,27 @@ func (c Chat) Send(message ...string) (ChatAPI, error) {
 	return r, nil
 }
 
+// SendEphemeral sends an exploding chat message
+func (c Chat) SendEphemeral(lifetime time.Duration, message ...string) (ChatAPI, error) {
+	m := ChatAPI{
+		Params: &params{},
+	}
+	m.Params.Options = options{
+		Message: &mesg{},
+	}
+
+	m.Method = "send"
+	m.Params.Options.Channel = &c.Channel
+	m.Params.Options.Message.Body = strings.Join(message, " ")
+	m.Params.Options.ExplodingLifetime = lifetime
+
+	r, err := chatAPIOut(c.keybase, m)
+	if err != nil {
+		return ChatAPI{}, err
+	}
+	return r, nil
+}
+
 // Reply sends a reply to a chat message
 func (c Chat) Reply(replyTo int, message ...string) (ChatAPI, error) {
 	m := ChatAPI{
